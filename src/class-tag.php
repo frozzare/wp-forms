@@ -79,6 +79,10 @@ class Tag extends Attributes {
 				$value = json_encode( $value, JSON_UNESCAPED_UNICODE );
 			}
 
+			if ( empty( $value ) ) {
+				continue;
+			}
+
 			$name = $this->escape( $name, true );
 
 			if ( strpos( $value, '"' ) !== false ) {

@@ -78,10 +78,8 @@ class Field extends Attributes {
 	 */
 	public function __construct( array $attributes = [], $tag = 'input', $escape = true ) {
 		$this->set_attributes( $attributes );
-		$this->set_attribute( 'id', str_replace( '[]', '', $this->slug ) );
-		$this->set_attribute( 'name', $this->slug );
 
-		$this->tag    = $this->tag_name();
+		$this->tag    = $this->tag_name( $tag );
 		$this->escape = $escape;
 		$this->xhtml  = $this->tag === 'input';
 	}
@@ -90,23 +88,26 @@ class Field extends Attributes {
 	 * Render field.
 	 */
 	public function field() {
-		return new Tag( $this->tag_name(), $this->value(), $this->attributes, empty( $this->items ) ? $this->escape : false, $this->xhtml );
+		return new Tag( $this->tag, $this->value(), $this->attributes, empty( $this->items ) ? $this->escape : false,
+			$this->xhtml );
 	}
 
 	/**
 	 * Get tag name.
 	 *
+	 * @param  string $tag
+	 *
 	 * @return string
 	 */
-	public function tag_name() {
+	public function tag_name( $tag = 'input' ) {
 		switch ( $this->get_attribute( 'type' ) ) {
 			case 'select':
 			case 'textarea':
 				return $this->get_attribute( 'type' );
 			case 'input':
-				return $this->tag;
+				return $tag;
 			default:
-				return $this->tag;
+				return $tag;
 		}
 	}
 
@@ -130,6 +131,14 @@ class Field extends Attributes {
 				$this->attributes[$key] = $value;
 			}
 		}
+
+		if ( ! isset( $this->attributes['id'] ) ) {
+			$this->attributes['id'] = $this->slug;
+		}
+
+		if ( ! isset( $this->attributes['name'] ) ) {
+			$this->attributes['name'] = $this->slug;
+		}
 	}
 
 	/**
@@ -141,7 +150,8 @@ class Field extends Attributes {
 		$html = $this->text;
 
 		foreach ( $this->items as $item ) {
-			$item['slug'] = $this->slug . '[]';
+			$item['type'] = '';
+			$item['name'] = $this->slug . '[]';
 			$html .= ( new Field( $item, 'option', [], false ) )->field();
 		}
 
