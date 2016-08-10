@@ -47,7 +47,18 @@ class Forms extends Container {
 	 * @return mixed
 	 */
 	public function register( $key, array $fields = [], array $attributes = [] ) {
-		return $this->bind( $key, new Form( $key, $fields, $attributes ) );
+		if ( class_exists( $key ) || $key instanceof Form ) {
+			if ( class_exists( $key ) ) {
+				$key = new $key;
+			}
+
+			$form = new Form( $key->get_name(), $key->get_fields() ?: [], $key->get_attributes() ?: [] );
+			$key  = $key->get_name();
+		} else {
+			$form = new Form( $key, $fields, $attributes );
+		}
+
+		return $this->bind( strtolower( $key ), $form );
 	}
 
 	/**

@@ -57,7 +57,11 @@ class Form {
 	 * @param array  $fields
 	 * @param array  $attributes
 	 */
-	public function __construct( $name, array $fields = [], array $attributes = [] ) {
+	public function __construct( $name = '', array $fields = [], array $attributes = [] ) {
+		if ( empty( $name ) ) {
+			return;
+		}
+
 		$this->name   = $name;
 		$this->tag    = new Tag( 'form', '', $this->attributes );
 		$this->div    = new Tag( 'div', '', ['class' => 'form-group'] );
