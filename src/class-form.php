@@ -203,7 +203,7 @@ class Form {
 			echo $this->div->close();
 		}
 
-		echo $this->button->render() . "\n";
+		echo $this->button->render();
 		echo $this->tag->close();
 		// @codingStandardsIgnoreEnd
 	}
