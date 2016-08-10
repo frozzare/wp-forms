@@ -5,13 +5,6 @@ namespace Frozzare\Forms;
 class Validator {
 
 	/**
-	 * The form.
-	 *
-	 * @var \Frozzare\Forms\Form
-	 */
-	protected $form;
-
-	/**
 	 * Validaton errors.
 	 *
 	 * @var array
@@ -28,13 +21,9 @@ class Validator {
 	/**
 	 * Validator constructor.
 	 *
-	 * @param array                $rules
-	 * @param \Frozzare\Forms\Form $form
+	 * @param array $rules
 	 */
-	public function __construct( array $rules = [], Form $form = null ) {
-		$this->form = $form;
-
-		// Set rules.
+	public function __construct( array $rules = [] ) {
 		$this->set_rules( $rules );
 	}
 
@@ -95,13 +84,6 @@ class Validator {
 	 * @return mixed
 	 */
 	protected function get_error_message( $key, $value ) {
-		$message = '';
-
-		// If a form exists.
-		if ( $this->form ) {
-			$message = $this->form->get_error( $key, $value );
-		}
-
 		/**
 		 * Modify error message.
 		 *
@@ -109,7 +91,7 @@ class Validator {
 		 * @param string $key
 		 * @param mixed  $value
 		 */
-		return apply_filters( 'forms_get_error_message', $message, $key, $value );
+		return apply_filters( 'forms_get_error_message', '', $key, $value );
 	}
 
 	/**
