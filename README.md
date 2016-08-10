@@ -1,5 +1,7 @@
 # Forms [![Build Status](https://travis-ci.org/frozzare/wp-forms.svg?branch=master)](https://travis-ci.org/frozzare/wp-forms)
 
+> Requires PHP 5.6 and WordPress 4.0
+
 Create forms in using code in WordPress.
 
 ## Installation
