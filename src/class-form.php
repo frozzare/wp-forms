@@ -1,0 +1,128 @@
+<?php
+
+namespace Frozzare\Forms;
+
+class Form {
+
+	/**
+	 * Form attributes.
+	 *
+	 * @var array
+	 */
+	protected $attributes = [
+		'action'  => '#',
+		'enctype' => 'multipart/form-data',
+		'method'  => 'POST'
+	];
+
+	/**
+	 * The button tag.
+	 *
+	 * @var \Frozzare\Forms\Tag
+	 */
+	protected $button;
+
+	/**
+	 * The div tag.
+	 *
+	 * @var \Frozzare\Forms\Tag
+	 */
+	protected $div;
+
+	/**
+	 * Form fields.
+	 *
+	 * @var array
+	 */
+	protected $fields = [];
+
+	/**
+	 * Form name.
+	 *
+	 * @var string
+	 */
+	protected $name;
+
+	/**
+	 * The form tag.
+	 *
+	 * @var \Frozzare\Forms\Tag
+	 */
+	protected $tag;
+
+	/**
+	 * Form constructor.
+	 *
+	 * @param string $name
+	 * @param array  $fields
+	 * @param array  $attributes
+	 */
+	public function __construct( $name, array $fields = [], array $attributes = [] ) {
+		$this->name   = $name;
+		$this->tag    = new Tag( 'form', '', $this->attributes );
+		$this->div    = new Tag( 'div', '', ['class' => 'form-group'] );
+		$this->button = new Tag( 'button', $name, ['class' => 'form-submit'] );
+
+		// Set form fields.
+		$this->set_fields( $fields );
+
+		// Set form tag attributes.
+		$this->tag->set_attribute( 'id', $this->name );
+		$this->tag->set_attribute( 'name', $this->name );
+	}
+
+	/**
+	 * Get fields.
+	 *
+	 * @return array
+	 */
+	public function get_fields() {
+		return $this->fields;
+	}
+
+	/**
+	 * Get form name.
+	 *
+	 * @return string
+	 */
+	public function get_name() {
+		return $this->name;
+	}
+
+	/**
+	 * Prepare fields.
+	 *
+	 * @param  array $fields
+	 *
+	 * @return array
+	 */
+	public function set_fields( array $fields ) {
+		foreach ( $fields as $key => $field ) {
+			if ( is_string( $key ) ) {
+				$field['slug'] = $key;
+			}
+
+			$this->fields[] = new Field( $field );
+		}
+	}
+
+	/**
+	 * Render form.
+	 */
+	public function render() {
+		echo $this->tag->open();
+
+		foreach ( $this->fields as $field ) {
+			echo $this->div->open();
+
+			echo $field->label();
+			echo $field->field();
+
+			echo $this->div->close();
+		}
+
+		// echo $this->button->render() . "\n";
+
+		echo $this->tag->close();
+	}
+}
