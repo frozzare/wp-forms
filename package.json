@@ -2,7 +2,7 @@
   "name": "wp-forms",
   "version": "1.0.0",
   "repository": "https://github.com/frozzare/wp-forms",
-  "description": "Create forms in WordPress easy",
+  "description": "Create forms in using code in WordPress",
   "author": "Fredrik Forsmo <fredrik.forsmo@gmail.com>",
   "license": "MIT",
   "devDependencies": {

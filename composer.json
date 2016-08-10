@@ -2,7 +2,7 @@
   "name": "frozzare/wp-forms",
   "type": "wordpress-plugin",
   "license": "MIT",
-  "description": "Create forms in WordPress easy",
+  "description": "Create forms in using code in WordPress",
   "homepage": "https://github.com/frozzare/wp-forms",
   "authors": [
     {

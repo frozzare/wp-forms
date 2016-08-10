@@ -1,6 +1,6 @@
 # Forms
 
-Create forms in WordPress easy
+Create forms in using code in WordPress.
 
 ## Installation
 
