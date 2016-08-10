@@ -126,8 +126,6 @@ class Field extends Attributes {
 			case 'select':
 			case 'textarea':
 				return $this->get_attribute( 'type' );
-			case 'input':
-				return $tag;
 			default:
 				return $tag;
 		}
