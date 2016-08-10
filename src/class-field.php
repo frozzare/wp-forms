@@ -77,12 +77,13 @@ class Field extends Attributes {
 	 * @param bool   $escape
 	 */
 	public function __construct( array $attributes = [], $tag = 'input', $escape = true ) {
-		$this->xhtml  = $tag === 'input';
-		$this->tag    = $tag;
-		$this->escape = $escape;
 		$this->set_attributes( $attributes );
 		$this->set_attribute( 'id', str_replace( '[]', '', $this->slug ) );
 		$this->set_attribute( 'name', $this->slug );
+
+		$this->tag    = $this->tag_name();
+		$this->escape = $escape;
+		$this->xhtml  = $this->tag === 'input';
 	}
 
 	/**
