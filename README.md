@@ -14,7 +14,7 @@ composer require frozzare/wp-forms
 
 ```php
 // Register form.
-forms()->register( 'contact', [
+forms()->add( 'contact', [
 	'name' => [
 		'label' => 'Name',
 		'rules' => 'required|max:250'

@@ -3,6 +3,7 @@
 namespace Frozzare\Forms;
 
 use Frozzare\Tank\Container;
+use InvalidArgumentException;
 
 class Forms extends Container {
 
@@ -27,18 +28,7 @@ class Forms extends Container {
 	}
 
 	/**
-	 * Get form.
-	 *
-	 * @param  string $key
-	 *
-	 * @return \Frozzare\Forms\Form
-	 */
-	public function get( $key ) {
-		return $this->make( $key );
-	}
-
-	/**
-	 * Register form.
+	 * Add form.
 	 *
 	 * @param  string $key
 	 * @param  array  $fields
@@ -46,7 +36,7 @@ class Forms extends Container {
 	 *
 	 * @return mixed
 	 */
-	public function register( $key, array $fields = [], array $attributes = [] ) {
+	public function add( $key, array $fields = [], array $attributes = [] ) {
 		if ( class_exists( $key ) || $key instanceof Form ) {
 			if ( class_exists( $key ) ) {
 				$key = new $key;
@@ -62,15 +52,45 @@ class Forms extends Container {
 	}
 
 	/**
+	 * Get form errors.
+	 *
+	 * @param  string $key
+	 *
+	 * @return array
+	 */
+	public function errors( $key ) {
+		if ( $form = $this->get( $key ) ) {
+			return $form->get_errors();
+		}
+
+		return [];
+	}
+
+	/**
+	 * Get form.
+	 *
+	 * @param  string $key
+	 *
+	 * @return \Frozzare\Forms\Form
+	 */
+	public function get( $key ) {
+		try {
+			$form = $this->make( $key );
+
+			return $form instanceof Form ? $form : null;
+		} catch ( InvalidArgumentException $e ) {
+			return;
+		}
+	}
+
+	/**
 	 * Render form if form can be found.
 	 *
 	 * @param string $key
 	 */
 	public function render( $key ) {
-		if ( $form = $this->make( $key ) ) {
-			if ( $form instanceof Form ) {
-				$form->render();
-			}
+		if ( $form = $this->get( $key ) ) {
+			$form->render();
 		}
 	}
 }

@@ -7,34 +7,68 @@ use Frozzare\Forms\Forms;
 
 class Forms_Test extends \WP_UnitTestCase {
 
-	public function test_register() {
-		Forms::instance()->register( 'contact', [
+	public function setUp() {
+		parent::setUp();
+		$this->forms = Forms::instance();
+	}
+
+	public function tearDown() {
+		parent::tearDown();
+		unset( $this->forms );
+	}
+
+	public function test_add() {
+		$this->forms->add( 'contact', [
 			'name' => [
 				'label' => 'Name'
 			]
 		] );
 
-		$this->assertInstanceOf( Form::class, Forms::instance()->get( 'contact' ) );
-		$this->assertSame( 'contact', Forms::instance()->get( 'contact' )->get_name() );
+		$this->assertInstanceOf( Form::class, $this->forms->get( 'contact' ) );
+		$this->assertSame( 'contact', $this->forms->get( 'contact' )->get_name() );
 	}
 
-	public function test_register_class() {
+	public function test_add_class() {
 		require_once __DIR__ . '/fixtures/class-contact.php';
 
-		Forms::instance()->register( Contact::class );
+		$this->forms->add( Contact::class );
 
-		$this->assertInstanceOf( Form::class, Forms::instance()->get( 'contact' ) );
-		$this->assertSame( 'contact', Forms::instance()->get( 'contact' )->get_name() );
+		$this->assertInstanceOf( Form::class, $this->forms->get( 'contact' ) );
+		$this->assertSame( 'contact', $this->forms->get( 'contact' )->get_name() );
+	}
+
+	public function test_errors_empty() {
+		$this->forms->add( 'contact', [
+			'name' => [
+				'label' => 'Name',
+				'rules' => 'required'
+			]
+		] );
+
+		$this->assertEmpty( $this->forms->errors( 'contact' ) );
+	}
+
+	public function test_errors() {
+		$_POST['name'] = '';
+
+		$this->forms->add( 'contact', [
+			'name' => [
+				'label' => 'Name',
+				'rules' => 'required'
+			]
+		] );
+
+		$this->assertArrayHasKey( 'name.required', $this->forms->errors( 'contact' ) );
 	}
 
 	public function test_render() {
-		Forms::instance()->register( 'contact', [
+		$this->forms->add( 'contact', [
 			'name' => [
 				'label' => 'Name'
 			]
 		] );
 
-		Forms::instance()->render( 'contact' );
+		$this->forms->render( 'contact' );
 
 		$this->expectOutputRegex( '/<input/' );
 	}
