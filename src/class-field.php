@@ -93,7 +93,24 @@ class Field extends Attributes {
 	public function field() {
 		$escape = empty( $this->items ) ? $this->escape : false;
 
-		return new Tag( $this->tag, $this->value(), $this->attributes, $escape, $this->xhtml );
+		return new Tag( $this->tag, $this->get_content(), $this->attributes, $escape, $this->xhtml );
+	}
+
+	/**
+	 * Get html content.
+	 *
+	 * @return string
+	 */
+	public function get_content() {
+		$html = $this->text;
+
+		foreach ( $this->items as $item ) {
+			$item['type'] = '';
+			$item['name'] = $this->name . '[]';
+			$html .= ( new Field( $item, 'option', [], false ) )->field();
+		}
+
+		return $html;
 	}
 
 	/**
@@ -169,22 +186,5 @@ class Field extends Attributes {
 		if ( ! isset( $this->attributes['name'] ) ) {
 			$this->attributes['name'] = $this->name;
 		}
-	}
-
-	/**
-	 * Get html value.
-	 *
-	 * @return string
-	 */
-	public function value() {
-		$html = $this->text;
-
-		foreach ( $this->items as $item ) {
-			$item['type'] = '';
-			$item['name'] = $this->name . '[]';
-			$html .= ( new Field( $item, 'option', [], false ) )->field();
-		}
-
-		return $html;
 	}
 }
