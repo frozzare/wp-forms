@@ -85,7 +85,9 @@ class Field extends Attributes {
 	}
 
 	/**
-	 * Render field.
+	 * Get field tag.
+	 *
+	 * @return \Frozzare\Forms\Tag
 	 */
 	public function field() {
 		$escape = empty( $this->items ) ? $this->escape : false;
@@ -133,7 +135,9 @@ class Field extends Attributes {
 	}
 
 	/**
-	 * Render label.
+	 * Get label tag.
+	 *
+	 * @return \Frozzare\Forms\Tag
 	 */
 	public function label() {
 		return new Tag( 'label', $this->label, ['for' => $this->attributes['id']] );
