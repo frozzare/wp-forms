@@ -191,6 +191,7 @@ class Form {
 	 * Render form.
 	 */
 	public function render() {
+		// @codingStandardsIgnoreStart
 		echo $this->tag->open();
 
 		foreach ( $this->fields as $field ) {
@@ -203,8 +204,8 @@ class Form {
 		}
 
 		echo $this->button->render() . "\n";
-
 		echo $this->tag->close();
+		// @codingStandardsIgnoreEnd
 	}
 
 	/**
