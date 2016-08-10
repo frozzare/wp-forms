@@ -48,7 +48,7 @@ class Validator {
 		}
 
 		if ( is_numeric( $str ) ) {
-			return $str == (int) $str ? (int) $str : (float) $str; // loose comparison
+			return $str == (int) $str ? (int) $str : (float) $str; // WPCS: loose comparison
 		}
 
 		if ( $str === 'true' || $str === 'false' ) {
@@ -151,7 +151,7 @@ class Validator {
 	 * @return array
 	 */
 	protected function parse_parameters( $rule, $parameter ) {
-		if ( strtolower( $rule ) == 'regex' ) {
+		if ( strtolower( $rule ) === 'regex' ) {
 			return [$parameter];
 		}
 

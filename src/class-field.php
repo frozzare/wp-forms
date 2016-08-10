@@ -88,8 +88,9 @@ class Field extends Attributes {
 	 * Render field.
 	 */
 	public function field() {
-		return new Tag( $this->tag, $this->value(), $this->attributes, empty( $this->items ) ? $this->escape : false,
-			$this->xhtml );
+		$escape = empty( $this->items ) ? $this->escape : false;
+
+		return new Tag( $this->tag, $this->value(), $this->attributes, $escape, $this->xhtml );
 	}
 
 	/**
