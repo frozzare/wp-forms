@@ -10,7 +10,8 @@ class Field extends Attributes {
 	 * @var array
 	 */
 	protected $attributes = [
-		'type' => 'string'
+		'class' => 'form-control',
+		'type'  => 'string'
 	];
 
 	/**

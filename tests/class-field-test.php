@@ -10,7 +10,7 @@ class Field_Test extends \WP_UnitTestCase {
 	public function test_field() {
 		$field = new Field( ['name' => 'name'] );
 		$this->assertInstanceOf( Tag::class, $field->field() );
-		$this->assertSame( '<input type="string" id="name" name="name" />', $field->field()->__toString() );
+		$this->assertSame( '<input class="form-control" type="string" id="name" name="name" />', $field->field()->__toString() );
 	}
 
 	public function test_label() {
