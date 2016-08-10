@@ -1,4 +1,4 @@
-# Forms
+# Forms [![Build Status](https://travis-ci.org/frozzare/wp-forms.svg?branch=master)](https://travis-ci.org/frozzare/wp-forms)
 
 Create forms in using code in WordPress.
 
