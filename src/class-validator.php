@@ -70,7 +70,7 @@ class Validator {
 	 * @param mixed  $value
 	 */
 	protected function add_error( $name, $rule, $value ) {
-		$key = sprintf( '%s.%s', $name, array_shift( explode( ':', $rule ) ) );
+		$key = sprintf( '%s.%s', $name, explode( ':', $rule )[0] );
 
 		$this->errors[$key] = $this->get_error_message( $key, $value );
 	}
