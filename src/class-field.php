@@ -102,6 +102,19 @@ class Field extends Attributes {
 	}
 
 	/**
+	 * Get post value.
+	 *
+	 * @return mixed
+	 */
+	public function get_value() {
+		if ( isset( $_POST[$this->name] ) ) {
+			$value = $_POST[$this->name];
+
+			return is_string( $value ) ? wp_unslash( $value ) : $value;
+		}
+	}
+
+	/**
 	 * Get tag name.
 	 *
 	 * @param  string $tag
