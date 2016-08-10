@@ -35,18 +35,18 @@ class Field extends Attributes {
 	public $label = '';
 
 	/**
+	 * The field name.
+	 *
+	 * @var string
+	 */
+	public $name = '';
+
+	/**
 	 * The field rules.
 	 *
 	 * @var string
 	 */
 	public $rules = '';
-
-	/**
-	 * The field slug.
-	 *
-	 * @var string
-	 */
-	public $slug = '';
 
 	/**
 	 * The field tag.
@@ -93,6 +93,15 @@ class Field extends Attributes {
 	}
 
 	/**
+	 * Get name attribute.
+	 *
+	 * @return string
+	 */
+	public function get_name() {
+		return $this->attributes['name'];
+	}
+
+	/**
 	 * Get tag name.
 	 *
 	 * @param  string $tag
@@ -115,7 +124,7 @@ class Field extends Attributes {
 	 * Render label.
 	 */
 	public function label() {
-		return new Tag( 'label', $this->label, ['for' => $this->slug] );
+		return new Tag( 'label', $this->label, ['for' => $this->attributes['id']] );
 	}
 
 	/**
@@ -133,11 +142,11 @@ class Field extends Attributes {
 		}
 
 		if ( ! isset( $this->attributes['id'] ) ) {
-			$this->attributes['id'] = $this->slug;
+			$this->attributes['id'] = $this->name;
 		}
 
 		if ( ! isset( $this->attributes['name'] ) ) {
-			$this->attributes['name'] = $this->slug;
+			$this->attributes['name'] = $this->name;
 		}
 	}
 
@@ -151,7 +160,7 @@ class Field extends Attributes {
 
 		foreach ( $this->items as $item ) {
 			$item['type'] = '';
-			$item['name'] = $this->slug . '[]';
+			$item['name'] = $this->name . '[]';
 			$html .= ( new Field( $item, 'option', [], false ) )->field();
 		}
 
