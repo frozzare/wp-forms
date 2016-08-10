@@ -35,5 +35,7 @@ class Field_Test extends \WP_UnitTestCase {
 		$this->assertSame( 'email', $field->name );
 		$this->assertSame( 'Email', $field->label );
 		$this->assertSame( 'email', $field->get_attribute( 'class' ) );
+		$field->set_attributes( ['attributes' => ['class' => 'foo']] );
+		$this->assertSame( 'foo', $field->get_attribute( 'class' ) );
 	}
 }

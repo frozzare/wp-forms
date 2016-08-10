@@ -146,7 +146,11 @@ class Field extends Attributes {
 	public function set_attributes( array $attributes ) {
 		foreach ( $attributes as $key => $value ) {
 			if ( property_exists( $this, $key ) ) {
-				$this->$key = $value;
+				if ( is_array( $this->$key ) && is_array( $value ) ) {
+					$this->$key = array_merge( $this->$key, $value );
+				} else {
+					$this->$key = $value;
+				}
 			} else {
 				$this->attributes[$key] = $value;
 			}
