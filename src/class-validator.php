@@ -12,6 +12,24 @@ class Validator {
 	protected $errors = [];
 
 	/**
+	 * Callable rules.
+	 *
+	 * @var array
+	 */
+	protected $callable_rules = [
+		'alpha'     => 'ctype_alpha',
+		'alpha_num' => 'ctype_alnum',
+		'digit'     => 'ctype_digit'
+	];
+
+	/**
+	 * Regex rules.
+	 *
+	 * @var array
+	 */
+	protected $regex_rules = [];
+
+	/**
 	 * Current rules.
 	 *
 	 * @var array
@@ -76,6 +94,31 @@ class Validator {
 	}
 
 	/**
+	 * Get callable rule.
+	 *
+	 * @param  string $rule
+	 *
+	 * @return mixed
+	 */
+	protected function get_callable_rule( $rule ) {
+		$callable = '';
+
+		if ( isset( $this->callable_rules[$rule] ) ) {
+			$callable = $this->callable_rules[$rule];
+		}
+
+		/**
+		 * Modify callable rule.
+		 *
+		 * @param string $callable
+		 * @param string $rule
+		 */
+		$callable = apply_filters( 'forms_get_callable_rule', $callable, $rule );
+
+		return is_callable( $callable ) ? $callable : null;
+	}
+
+	/**
 	 * Get error message.
 	 *
 	 * @param  string $key
@@ -92,6 +135,29 @@ class Validator {
 		 * @param mixed  $value
 		 */
 		return apply_filters( 'forms_get_error_message', '', $key, $value );
+	}
+
+	/**
+	 * Get regex rule.
+	 *
+	 * @param  string $rule
+	 *
+	 * @return mixed
+	 */
+	protected function get_regex_rule_pattern( $rule ) {
+		$pattern = '';
+
+		if ( isset( $this->regex_rules[$rule] ) ) {
+			$pattern = $this->regex_rules[$rule];
+		}
+
+		/**
+		 * Modify regex rule pattern.
+		 *
+		 * @param string $pattern
+		 * @param string $rule
+		 */
+		return apply_filters( 'forms_get_regex_rule_pattern', $pattern, $rule );
 	}
 
 	/**
@@ -273,6 +339,16 @@ class Validator {
 	 */
 	protected function valiate_rule( $rule, $name, $value ) {
 		list( $rule, $parameters ) = $this->parse_rule( $rule );
+
+		// A callable check direct withoyt any custom validation method.
+		if ( $callable = $this->get_callable_rule( $rule ) ) {
+			return call_user_func_array( $callable, [$value] );
+		}
+
+		// A regex check direct without any custom validation method.
+		if ( $pattern = $this->get_regex_rule_pattern( $rule ) ) {
+			return preg_match( $pattern, $value );
+		}
 
 		$method = 'validate_' . $rule;
 
