@@ -27,6 +27,12 @@ class Validator_Test extends \WP_UnitTestCase {
 		$this->assertNotEmpty( $validator->validate( ['first_name' => 'Fredrik'] ) );
 	}
 
+	public function test_validate_between() {
+		$validator = new Validator( ['first_name' => 'between:7,10'] );
+		$this->assertEmpty( $validator->validate( ['first_name' => 'Fredrik'] ) );
+		$this->assertNotEmpty( $validator->validate( ['first_name' => 'Longer than seven'] ) );
+	}
+
 	public function test_validate_bool() {
 		$validator = new Validator( ['first_name' => 'bool'] );
 		$this->assertEmpty( $validator->validate( ['first_name' => true] ) );
@@ -43,10 +49,10 @@ class Validator_Test extends \WP_UnitTestCase {
 		$this->assertNotEmpty( $validator->validate( ['first_name' => 'Fredrik'] ) );
 	}
 
-	public function test_validate_between() {
-		$validator = new Validator( ['first_name' => 'between:7,10'] );
-		$this->assertEmpty( $validator->validate( ['first_name' => 'Fredrik'] ) );
-		$this->assertNotEmpty( $validator->validate( ['first_name' => 'Longer than seven'] ) );
+	public function test_validate_email() {
+		$validator = new Validator( ['first_name' => 'email'] );
+		$this->assertEmpty( $validator->validate( ['first_name' => 'test@test.com'] ) );
+		$this->assertNotEmpty( $validator->validate( ['first_name' => 'xle@aooeoe.'] ) );
 	}
 
 	public function test_validate_float() {

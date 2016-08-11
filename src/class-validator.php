@@ -290,6 +290,19 @@ class Validator {
 	}
 
 	/**
+	 * Validate that a value is a email.
+	 *
+	 * @param  string $name
+	 * @param  mixed  $value
+	 * @param  array  $parameters
+	 *
+	 * @return bool
+	 */
+	protected function validate_email( $name, $value, $parameters ) {
+		return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
+	}
+
+	/**
 	 * Validate that a value is greater than a minimum value.
 	 *
 	 * @param  string $name
