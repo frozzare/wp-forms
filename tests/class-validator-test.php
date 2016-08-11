@@ -31,6 +31,8 @@ class Validator_Test extends \WP_UnitTestCase {
 		$validator = new Validator( ['first_name' => 'bool'] );
 		$this->assertEmpty( $validator->validate( ['first_name' => true] ) );
 		$this->assertEmpty( $validator->validate( ['first_name' => false] ) );
+		$this->assertEmpty( $validator->validate( ['first_name' => '1'] ) );
+		$this->assertEmpty( $validator->validate( ['first_name' => '0'] ) );
 		$this->assertNotEmpty( $validator->validate( ['first_name' => null] ) );
 		$this->assertNotEmpty( $validator->validate( ['first_name' => 'Fredrik'] ) );
 	}

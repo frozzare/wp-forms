@@ -34,6 +34,7 @@ class Validator {
 	 * @var array
 	 */
 	protected $regex_rules = [
+		'bool' => '/0|1/'
 	];
 
 	/**
@@ -347,23 +348,25 @@ class Validator {
 	protected function valiate_rule( $rule, $name, $value ) {
 		list( $rule, $parameters ) = $this->parse_rule( $rule );
 
-		// A callable check direct withoyt any custom validation method.
+		$valid = false;
+
+		// Check callable rule.
 		if ( $callable = $this->get_callable_rule( $rule ) ) {
-			return call_user_func_array( $callable, [$value] );
+			$valid = call_user_func_array( $callable, [$value] );
 		}
 
-		// A regex check direct without any custom validation method.
-		if ( $pattern = $this->get_regex_rule_pattern( $rule ) ) {
-			return preg_match( $pattern, $value );
+		// Check regex rule.
+		if ( ! $valid && $pattern = $this->get_regex_rule_pattern( $rule ) ) {
+			$valid = preg_match( $pattern, $value );
 		}
 
 		$method = 'validate_' . $rule;
 
-		if ( method_exists( $this, $method ) ) {
+		if ( ! $valid && method_exists( $this, $method ) ) {
 			return $this->$method( $name, $value, $parameters );
 		}
 
-		return true;
+		return $valid;
 	}
 
 	/**
