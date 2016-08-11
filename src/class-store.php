@@ -28,9 +28,17 @@ class Store {
 		}
 
 		foreach ( $data as $key => $value ) {
-			update_post_meta( $post_id, $key, $value );
+			// If update post meta returns false, force delete post.
+			if ( ! update_post_meta( $post_id, $key, $value ) ) {
+				return wp_delete_post( $post_id, true );
+			}
 		}
 
-		return update_post_meta( $post_id, forms()->id_key(), $id ) > 0;
+		// If update post meta returns false, force delete post.
+		if ( update_post_meta( $post_id, forms()->id_key(), $id ) ) {
+			return true;
+		}
+
+		return wp_delete_post( $post_id, true );
 	}
 }
