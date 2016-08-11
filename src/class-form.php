@@ -44,6 +44,13 @@ class Form {
 	protected $fields = [];
 
 	/**
+	 * Form id.
+	 *
+	 * @var string
+	 */
+	protected $id;
+
+	/**
 	 * Form name.
 	 *
 	 * @var string
@@ -77,6 +84,7 @@ class Form {
 		}
 
 		$this->name   = $name;
+		$this->id     = strtolower( $name );
 		$this->tag    = new Tag( 'form', '', $this->attributes );
 		$this->div    = new Tag( 'div', '', ['class' => 'form-group'] );
 		$this->button = new Tag( 'button', $name, ['class' => 'form-submit'] );
@@ -85,8 +93,8 @@ class Form {
 		$this->set_fields( $fields );
 
 		// Set form tag attributes.
-		$this->tag->set_attribute( 'id', $this->name );
-		$this->tag->set_attribute( 'name', $this->name );
+		$this->tag->set_attribute( 'id', strtolower( $this->name ) );
+		$this->tag->set_attribute( 'name', strtolower( $this->name ) );
 
 		// Validate fields
 		if ( ! empty( $_POST ) ) {
@@ -121,6 +129,15 @@ class Form {
 	 */
 	public function get_errors() {
 		return $this->errors;
+	}
+
+	/**
+	 * Get form id.
+	 *
+	 * @return string
+	 */
+	public function get_id() {
+		return $this->id;
 	}
 
 	/**

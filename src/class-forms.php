@@ -48,7 +48,48 @@ class Forms extends Container {
 			$form = new Form( $key, $fields, $attributes );
 		}
 
-		return $this->bind( strtolower( $key ), $form );
+		$key = strtolower( $key );
+
+		$this->add_key( $key );
+
+		return $this->bind( $key, $form );
+	}
+
+	/**
+	 * Add form key to list.
+	 *
+	 * @param  string $key
+	 */
+	protected function add_key( $key ) {
+		try {
+			$forms = $this->make( __NAMESPACE__ . '\\list' );
+			$forms = is_array( $forms ) ? $forms : [];
+		} catch ( InvalidArgumentException $e ) {
+			$forms = [];
+		}
+
+		$forms[] = $key;
+
+		$this->bind( __NAMESPACE__ . '\\list', $forms );
+	}
+
+	/**
+	 * Get all forms.
+	 *
+	 * @return array
+	 */
+	public function all() {
+		try {
+			$forms = $this->make( __NAMESPACE__ . '\\list' );
+			$forms = is_array( $forms ) ? $forms : [];
+			$forms = array_map( function ( $form ) {
+				return $this->get( $form );
+			}, $forms );
+		} catch ( InvalidArgumentException $e ) {
+			$forms = [];
+		}
+
+		return $forms;
 	}
 
 	/**

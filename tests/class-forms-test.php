@@ -28,6 +28,17 @@ class Forms_Test extends \WP_UnitTestCase {
 		$this->assertSame( 'contact', $this->forms->get( 'contact' )->get_name() );
 	}
 
+	public function test_all() {
+		$this->forms->add( 'contact', [
+			'name' => [
+				'label' => 'Name',
+				'rules' => 'required'
+			]
+		] );
+
+		$this->assertSame( 'contact', $this->forms->get( 'contact' )->get_name() );
+	}
+
 	public function test_add_class() {
 		require_once __DIR__ . '/fixtures/class-contact.php';
 
