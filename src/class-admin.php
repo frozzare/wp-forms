@@ -7,6 +7,20 @@ use WP_Query;
 class Admin {
 
 	/**
+	 * The current form instance.
+	 *
+	 * @var \Frozzare\Forms\Form
+	 */
+	protected $form;
+
+	/**
+	 * The post id.
+	 *
+	 * @var int
+	 */
+	protected $post_id = 0;
+
+	/**
 	 * The post type.
 	 *
 	 * @var string
@@ -17,14 +31,25 @@ class Admin {
 	 * Admin constructor.
 	 */
 	public function __construct() {
-		add_action( 'init', [$this, 'init'] );
-		add_filter( 'pre_get_posts', [$this, 'pre_get_posts'] );
-		add_action( 'restrict_manage_posts', [$this, 'restrict_manage_posts'], 9999 );
-		add_action( sprintf( 'manage_%s_posts_custom_column', $this->post_type ), [
-			$this,
-			'manage_posts_custom_column'
-		], 10, 2 );
-		add_filter( sprintf( 'manage_%s_posts_columns', $this->post_type ), [$this, 'manage_posts_columns'] );
+		$this->setup_hooks();
+	}
+
+	/**
+	 * Add meta boxes.
+	 */
+	public function add_meta_boxes() {
+		add_meta_box( 'form-data', esc_html__( 'Fields data', 'forms' ), [$this, 'metabox'] );
+	}
+
+	/**
+	 * Admin init callback.
+	 */
+	public function admin_init() {
+		$this->post_id = $_GET['post'];
+
+		if ( $form = get_post_meta( $this->post_id, forms()->id_key(), true ) ) {
+			$this->form = forms()->get( $form );
+		}
 	}
 
 	/**
@@ -98,8 +123,10 @@ class Admin {
 			return;
 		}
 
-		if ( $form = get_post_meta( $post_id, '_form_id', true ) ) {
-			return $form;
+		if ( $form = get_post_meta( $post_id, forms()->id_key(), true ) ) {
+			if ( $form = forms()->get( $form ) ) {
+				echo $form->get_name();
+			}
 		}
 	}
 
@@ -117,6 +144,34 @@ class Admin {
 	}
 
 	/**
+	 * Render metabox.
+	 */
+	public function metabox() {
+		?>
+		<table class="table">
+			<thead>
+			<tr>
+				<th>Field</th>
+				<th>Value</th>
+			</tr>
+			</thead>
+			<tbody>
+			<?php foreach ( $this->form->get_fields() as $field ): ?>
+				<tr>
+					<td>
+						<?php echo esc_html( $field->label ); ?>
+					</td>
+					<td>
+						<?php echo esc_html( get_post_meta( $this->post_id, $field->name, true ) ); ?>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+			</tbody>
+		</table>
+		<?php
+	}
+
+	/**
 	 * Filter posts on load if `form` query string is set.
 	 *
 	 * @param  WP_Query $query
@@ -129,7 +184,7 @@ class Admin {
 		$form = isset( $_GET['form'] ) ? sanitize_text_field( $_GET['form'] ) : '';
 
 		if ( $pagenow === 'edit.php' && ! empty( $form ) ) {
-			$query->set( 'meta_key', '_form_id' );
+			$query->set( 'meta_key', forms()->id_key() );
 			$query->set( 'meta_value', $form );
 		}
 
@@ -152,5 +207,21 @@ class Admin {
 			<?php endforeach; ?>
 		</select>
 		<?php
+	}
+
+	/**
+	 * Setup hooks.
+	 */
+	protected function setup_hooks() {
+		add_action( 'add_meta_boxes', [$this, 'add_meta_boxes'] );
+		add_action( 'admin_init', [$this, 'admin_init'] );
+		add_action( 'init', [$this, 'init'] );
+		add_filter( 'pre_get_posts', [$this, 'pre_get_posts'] );
+		add_action( 'restrict_manage_posts', [$this, 'restrict_manage_posts'], 9999 );
+		add_action( sprintf( 'manage_%s_posts_custom_column', $this->post_type ), [
+			$this,
+			'manage_posts_custom_column'
+		], 10, 2 );
+		add_filter( sprintf( 'manage_%s_posts_columns', $this->post_type ), [$this, 'manage_posts_columns'] );
 	}
 }

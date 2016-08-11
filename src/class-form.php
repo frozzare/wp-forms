@@ -65,6 +65,13 @@ class Form {
 	protected $rules = [];
 
 	/**
+	 * The form store instance.
+	 *
+	 * @var \Frozzare\Forms\Store
+	 */
+	protected $store;
+
+	/**
 	 * The form tag.
 	 *
 	 * @var \Frozzare\Forms\Tag
@@ -83,6 +90,7 @@ class Form {
 			return;
 		}
 
+		$this->store  = new Store;
 		$this->name   = $name;
 		$this->id     = strtolower( $name );
 		$this->tag    = new Tag( 'form', '', $this->attributes );
@@ -99,6 +107,7 @@ class Form {
 		// Validate fields
 		if ( ! empty( $_POST ) ) {
 			$this->validate_fields();
+			$this->save();
 		}
 	}
 
@@ -165,6 +174,39 @@ class Form {
 	}
 
 	/**
+	 * Render form.
+	 */
+	public function render() {
+		// @codingStandardsIgnoreStart
+		echo $this->tag->open();
+
+		foreach ( $this->fields as $field ) {
+			echo $this->div->open();
+
+			echo $field->label();
+			echo $field->field();
+
+			echo $this->div->close();
+		}
+
+		echo $this->button->render();
+		echo $this->tag->close();
+		// @codingStandardsIgnoreEnd
+	}
+
+	/**
+	 * Save form data.
+	 *
+	 * @return bool
+	 */
+	public function save() {
+		if ( ! empty( $this->errors ) ) {
+			return;
+		}
+		return $this->store->save( $this->id, $this->get_values() );
+	}
+
+	/**
 	 * Set error.
 	 *
 	 * @param string $name
@@ -202,27 +244,6 @@ class Form {
 
 			$this->fields[] = new Field( $field );
 		}
-	}
-
-	/**
-	 * Render form.
-	 */
-	public function render() {
-		// @codingStandardsIgnoreStart
-		echo $this->tag->open();
-
-		foreach ( $this->fields as $field ) {
-			echo $this->div->open();
-
-			echo $field->label();
-			echo $field->field();
-
-			echo $this->div->close();
-		}
-
-		echo $this->button->render();
-		echo $this->tag->close();
-		// @codingStandardsIgnoreEnd
 	}
 
 	/**

@@ -15,8 +15,17 @@ class Admin_Test extends \WP_UnitTestCase {
 		$this->assertNull( $admin->manage_posts_custom_column( 'form', 0 ) );
 		$post_id = $this->factory->post->create();
 		$this->assertNull( $admin->manage_posts_custom_column( 'form', $post_id ) );
-		update_post_meta( $post_id, '_form_id', 'test' );
-		$this->assertSame( 'test', $admin->manage_posts_custom_column( 'form', $post_id ) );
+
+		forms()->add( 'contact', [
+			'name' => [
+				'label' => 'Name'
+			]
+		] );
+
+		update_post_meta( $post_id, '_form_id', 'contact' );
+		$admin->manage_posts_custom_column( 'form', $post_id );
+
+		$this->expectOutputString( 'contact' );
 	}
 
 	public function test_manage_posts_columns() {

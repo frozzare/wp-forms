@@ -125,6 +125,15 @@ class Forms extends Container {
 	}
 
 	/**
+	 * Get id key that is used for postmeta.
+	 *
+	 * @return string
+	 */
+	public function id_key() {
+		return '_form_id';
+	}
+
+	/**
 	 * Render form if form can be found.
 	 *
 	 * @param string $key

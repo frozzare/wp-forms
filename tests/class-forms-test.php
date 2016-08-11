@@ -72,6 +72,10 @@ class Forms_Test extends \WP_UnitTestCase {
 		$this->assertArrayHasKey( 'name.required', $this->forms->errors( 'contact' ) );
 	}
 
+	public function test_id_key() {
+		$this->assertSame( '_form_id', forms()->id_key() );
+	}
+
 	public function test_render() {
 		$this->forms->add( 'contact', [
 			'name' => [
