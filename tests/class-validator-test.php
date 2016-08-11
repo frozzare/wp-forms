@@ -100,4 +100,13 @@ class Validator_Test extends \WP_UnitTestCase {
 		$this->assertEmpty( $validator->validate( ['first_name' => 'Fredrik123'] ) );
 		$this->assertNotEmpty( $validator->validate( ['first_name' => null] ) );
 	}
+
+	public function test_validate_url() {
+		$validator = new Validator( ['first_name' => 'url'] );
+		$this->assertEmpty( $validator->validate( ['first_name' => 'https://localhost'] ) );
+		$this->assertEmpty( $validator->validate( ['first_name' => 'http://wordpress.org'] ) );
+		$this->assertNotEmpty( $validator->validate( ['first_name' => 'Fredrik123'] ) );
+		$this->assertNotEmpty( $validator->validate( ['first_name' => null] ) );
+		$this->assertNotEmpty( $validator->validate( ['first_name' => 'foo://bar'] ) );
+	}
 }
