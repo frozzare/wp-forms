@@ -42,7 +42,7 @@ forms()->add( 'contact', [
 			]
 		]
 	]
-] );
+] )->button( 'Send' );
 
 // Render form.
 forms()->render( 'contact' );
