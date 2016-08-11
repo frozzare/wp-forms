@@ -104,8 +104,8 @@ class Form {
 		$this->tag->set_attribute( 'id', strtolower( $this->name ) );
 		$this->tag->set_attribute( 'name', strtolower( $this->name ) );
 
-		// Validate fields
-		if ( ! empty( $_POST ) ) {
+		// Save fields if nonce is verified and fields validated correct.
+		if ( ! empty( $_POST ) && $this->verify_nonce() ) {
 			$this->validate_fields();
 			$this->save();
 		}
@@ -180,6 +180,9 @@ class Form {
 		// @codingStandardsIgnoreStart
 		echo $this->tag->open();
 
+		// Create nonce field.
+		wp_nonce_field( 'forms_' . $this->id, '_forms_nonce' );
+
 		foreach ( $this->fields as $field ) {
 			echo $this->div->open();
 
@@ -203,6 +206,7 @@ class Form {
 		if ( ! empty( $this->errors ) ) {
 			return;
 		}
+
 		return $this->store->save( $this->id, $this->get_values() );
 	}
 
@@ -262,5 +266,18 @@ class Form {
 
 		// Merge with existing errors.
 		$this->errors = array_merge( $this->errors, $errors );
+	}
+
+	/**
+	 * Verify nonce.
+	 *
+	 * @return bool
+	 */
+	protected function verify_nonce() {
+		if ( ! isset( $_POST['_forms_nonce'] ) ) {
+			return false;
+		}
+
+		return wp_verify_nonce( $_POST['_forms_nonce'], 'forms_' . $this->id );
 	}
 }

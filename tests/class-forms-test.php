@@ -69,6 +69,17 @@ class Forms_Test extends \WP_UnitTestCase {
 			]
 		] );
 
+		$this->assertEmpty( $this->forms->errors( 'contact' ) );
+
+		$_POST['_forms_nonce'] = wp_create_nonce( 'forms_contact' );
+
+		$this->forms->add( 'contact', [
+			'name' => [
+				'label' => 'Name',
+				'rules' => 'required'
+			]
+		] );
+
 		$this->assertArrayHasKey( 'name.required', $this->forms->errors( 'contact' ) );
 	}
 
