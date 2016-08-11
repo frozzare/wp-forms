@@ -44,9 +44,6 @@ forms()->add( 'contact', [
 	]
 ] )->button( 'Send' );
 
-// Get form errors.
-forms()->errors( 'contact' );
-
 // Render form.
 forms()->render( 'contact' );
 
