@@ -19,7 +19,13 @@ class Validator {
 	protected $callable_rules = [
 		'alpha'     => 'ctype_alpha',
 		'alpha_num' => 'ctype_alnum',
-		'digit'     => 'ctype_digit'
+		'array'     => 'is_array',
+		'bool'      => 'is_bool',
+		'digit'     => 'ctype_digit',
+		'float'     => 'is_float',
+		'int'       => 'is_int',
+		'numeric'   => 'is_numeric',
+		'string'    => 'is_string'
 	];
 
 	/**
@@ -27,7 +33,8 @@ class Validator {
 	 *
 	 * @var array
 	 */
-	protected $regex_rules = [];
+	protected $regex_rules = [
+	];
 
 	/**
 	 * Current rules.
