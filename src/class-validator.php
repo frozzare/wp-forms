@@ -303,6 +303,19 @@ class Validator {
 	}
 
 	/**
+	 * Validate that a value is a ip.
+	 *
+	 * @param  string $name
+	 * @param  mixed  $value
+	 * @param  array  $parameters
+	 *
+	 * @return bool
+	 */
+	protected function validate_ip( $name, $value, $parameters ) {
+		return filter_var($value, FILTER_VALIDATE_IP) !== false;
+	}
+
+	/**
 	 * Validate that a value is greater than a minimum value.
 	 *
 	 * @param  string $name

@@ -69,6 +69,12 @@ class Validator_Test extends \WP_UnitTestCase {
 		$this->assertNotEmpty( $validator->validate( ['first_name' => 'Fredrik'] ) );
 	}
 
+	public function test_validate_ip() {
+		$validator = new Validator( ['first_name' => 'ip'] );
+		$this->assertEmpty( $validator->validate( ['first_name' => '8.8.8.8'] ) );
+		$this->assertNotEmpty( $validator->validate( ['first_name' => 'x.x.x.x'] ) );
+	}
+
 	public function test_validate_max() {
 		$validator = new Validator( ['first_name' => 'max:7'] );
 		$this->assertEmpty( $validator->validate( ['first_name' => 'Fredrik'] ) );
