@@ -42,6 +42,46 @@ class Admin {
 	}
 
 	/**
+	 * Admin head callback.
+	 */
+	public function admin_head() {
+		?>
+		<style type="text/css">
+			table.forms-form-table {
+				border: none;
+				width: 100%;
+			}
+
+			.forms-form-table thead th {
+				border-top: 1px solid #e1e1e1;
+				color: #32373c;
+				font-weight: bold;
+				text-align: left;
+			}
+
+			.forms-form-table thead th + th {
+				border-left: none;
+			}
+
+			.forms-form-table tbody tr:nth-child(odd) {
+				background-color: #f9f9f9
+			}
+
+			#form-data .inside {
+				padding: 0;
+				margin-top: -2px;
+			}
+
+			#poststuff #normal-sortables,
+			#form-data > .handlediv,
+			#form-data > h2 {
+				display: none;
+			}
+		</style>
+		<?php
+	}
+
+	/**
 	 * Admin init callback.
 	 */
 	public function admin_init() {
@@ -148,7 +188,7 @@ class Admin {
 	 */
 	public function metabox() {
 		?>
-		<table class="table">
+		<table class="table widefat forms-form-table">
 			<thead>
 			<tr>
 				<th>Field</th>
@@ -215,6 +255,7 @@ class Admin {
 	protected function setup_hooks() {
 		add_action( 'add_meta_boxes', [$this, 'add_meta_boxes'] );
 		add_action( 'admin_init', [$this, 'admin_init'] );
+		add_action( 'admin_head', [$this, 'admin_head'] );
 		add_action( 'init', [$this, 'init'] );
 		add_filter( 'pre_get_posts', [$this, 'pre_get_posts'] );
 		add_action( 'restrict_manage_posts', [$this, 'restrict_manage_posts'], 9999 );
