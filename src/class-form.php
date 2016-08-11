@@ -95,7 +95,7 @@ class Form {
 		$this->id     = strtolower( $name );
 		$this->tag    = new Tag( 'form', '', $this->attributes );
 		$this->div    = new Tag( 'div', '', ['class' => 'form-group'] );
-		$this->button = new Tag( 'button', $name, ['class' => 'form-submit'] );
+		$this->button = new Tag( 'button', esc_html__( 'Save', 'forms' ), ['class' => 'form-submit'] );
 
 		// Set form fields.
 		$this->set_fields( $fields );
@@ -109,6 +109,21 @@ class Form {
 			$this->validate_fields();
 			$this->save();
 		}
+	}
+
+	/**
+	 * Modify button.
+	 *
+	 * @param  string $content
+	 * @param  array  $attributes
+	 *
+	 * @return \Frozzare\Forms\Form
+	 */
+	public function button( $content, array $attributes = [] ) {
+		$this->button->set_content( $content );
+		$this->button->set_attributes( $attributes );
+
+		return $this;
 	}
 
 	/**

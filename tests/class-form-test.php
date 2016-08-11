@@ -6,6 +6,18 @@ use Frozzare\Forms\Form;
 
 class Form_Test extends \WP_UnitTestCase {
 
+	public function test_button() {
+		$form = new Form( 'contact' );
+		$form->render();
+		$this->expectOutputRegex( '/\<button class=\"form-submit\">Save<\/button>/' );
+	}
+
+	public function test_button_modified() {
+		$form = new Form( 'contact' );
+		$form->button('Send', ['id' => 'test'])->render();
+		$this->expectOutputRegex( '/\<button class=\"form-submit\" id=\"test\">Send<\/button>/' );
+	}
+
 	public function test_get_name() {
 		$form = new Form( 'contact' );
 		$this->assertSame( 'contact', $form->get_name() );
