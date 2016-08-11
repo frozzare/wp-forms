@@ -28,11 +28,11 @@ class Tag extends Attributes {
 	protected $name;
 
 	/**
-	 * Tag value.
+	 * Tag content.
 	 *
 	 * @var mixed
 	 */
-	protected $value;
+	protected $content;
 
 	/**
 	 * Xhtml tag.
@@ -45,14 +45,14 @@ class Tag extends Attributes {
 	 * Tag constructor.
 	 *
 	 * @param string $name
-	 * @param null   $value
+	 * @param null   $content
 	 * @param array  $attributes
 	 * @param bool   $escape
 	 * @param bool   $xhtml
 	 */
-	public function __construct( $name, $value = null, array $attributes = [], $escape = true, $xhtml = false ) {
+	public function __construct( $name, $content = null, array $attributes = [], $escape = true, $xhtml = false ) {
 		$this->name       = $name;
-		$this->value      = $value;
+		$this->content    = $content;
 		$this->attributes = $attributes;
 		$this->escape     = $escape;
 		$this->xhtml      = $xhtml;
@@ -107,6 +107,33 @@ class Tag extends Attributes {
 	}
 
 	/**
+	 * Get html content.
+	 *
+	 * @param  mixed $content
+	 *
+	 * @return string
+	 */
+	public function content( $content = null ) {
+		$html = '';
+
+		if ( is_null( $content ) && ! is_null( $this->content ) ) {
+			$content = $this->content;
+		}
+
+		if ( is_string( $content ) ) {
+			$html .= $this->escape( $content );
+		} else if ( $content instanceof Tag ) {
+			$html .= $content->render();
+		} else if ( is_array( $content ) ) {
+			foreach ( $content as $value ) {
+				$html .= $this->content( $value );
+			}
+		}
+
+		return $html;
+	}
+
+	/**
 	 * Escape value.
 	 *
 	 * @param  mixed $value
@@ -132,12 +159,12 @@ class Tag extends Attributes {
 	}
 
 	/**
-	 * Get tag value.
+	 * Get tag content.
 	 *
 	 * @return mixed
 	 */
-	public function get_value() {
-		return $this->value;
+	public function get_content() {
+		return $this->content;
 	}
 
 	/**
@@ -159,62 +186,35 @@ class Tag extends Attributes {
 	}
 
 	/**
-	 * Set tag value.
+	 * Set tag content.
 	 *
-	 * @param  mixed $value
+	 * @param  mixed $content
 	 *
 	 * @throws InvalidArgumentException if tag isn't a array, null, string or a instanceof Tag class
 	 *
 	 * @return \Frozzare\Forms\Tag
 	 */
-	public function set_value( $value ) {
-		if ( ! ( is_array( $value ) || is_null( $value ) || is_string( $value ) || $value instanceof Tag ) ) {
-			throw new InvalidArgumentException( 'Tag value must be array, null, string or a instanceof of Tag class' );
+	public function set_content( $content ) {
+		if ( ! ( is_array( $content ) || is_null( $content ) || is_string( $content ) || $content instanceof Tag ) ) {
+			throw new InvalidArgumentException( 'Tag content must be array, null, string or a instanceof of Tag class' );
 		}
 
-		$this->value = $value;
+		$this->content = $content;
 
 		return $this;
 	}
 
 	/**
-	 * Render html tag with attributes and values.
+	 * Render html tag with attributes and content.
 	 *
 	 * @return string
 	 */
 	public function render() {
-		if ( is_null( $this->value ) || $this->is_xhtml() ) {
+		if ( is_null( $this->content ) || $this->is_xhtml() ) {
 			return $this->open();
 		}
 
-		return $this->open() . $this->value() . $this->close();
-	}
-
-	/**
-	 * Get html value.
-	 *
-	 * @param  mixed $value
-	 *
-	 * @return string
-	 */
-	public function value( $value = null ) {
-		$html = '';
-
-		if ( is_null( $value ) && ! is_null( $this->value ) ) {
-			$value = $this->value;
-		}
-
-		if ( is_string( $value ) ) {
-			$html .= $this->escape( $value );
-		} else if ( $value instanceof Tag ) {
-			$html .= $value->render();
-		} else if ( is_array( $value ) ) {
-			foreach ( $value as $val ) {
-				$html .= $this->value( $val );
-			}
-		}
-
-		return $html;
+		return $this->open() . $this->content() . $this->close();
 	}
 
 	/**

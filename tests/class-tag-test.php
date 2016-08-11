@@ -32,22 +32,29 @@ class Tag_Test extends \WP_UnitTestCase {
 		$this->assertSame( '</p>', $tag->close() );
 	}
 
+	public function test_content() {
+		$tag = new Tag( 'p', 'Hello' );
+		$this->assertSame( 'Hello', $tag->content() );
+		$this->assertSame( 'bar', $tag->content( ['bar'] ) );
+		$this->assertSame( '<p>Hello</p>', $tag->content( $tag ) );
+	}
+
 	public function test_escape() {
 		$tag = new Tag( 'p', 'Hello' );
-		$this->assertSame( 'Hello', $tag->escape( $tag->get_value() ) );
-		$this->assertSame( 'Hello', $tag->escape( $tag->get_value(), true ) );
+		$this->assertSame( 'Hello', $tag->escape( $tag->get_content() ) );
+		$this->assertSame( 'Hello', $tag->escape( $tag->get_content(), true ) );
 		$this->assertSame( '&lt;p&gt;Hello&lt;/p&gt;', $tag->escape( '<p>Hello</p>' ) );
 		$this->assertSame( '&lt;p&gt;Hello&lt;/p&gt;', $tag->escape( '<p>Hello</p>', true ) );
+	}
+
+	public function test_get_content() {
+		$tag = new Tag( 'p', 'Hello' );
+		$this->assertSame( 'Hello', $tag->get_content() );
 	}
 
 	public function test_get_name() {
 		$tag = new Tag( 'p' );
 		$this->assertSame( 'p', $tag->get_name() );
-	}
-
-	public function test_get_value() {
-		$tag = new Tag( 'p', 'Hello' );
-		$this->assertSame( 'Hello', $tag->get_value() );
 	}
 
 	public function test_html_attributes() {
@@ -57,25 +64,18 @@ class Tag_Test extends \WP_UnitTestCase {
 		$this->assertSame( 'bar=\'["foo"]\'', trim( $tag->attributes( ['bar' => ['foo']] ) ) );
 	}
 
-	public function test_html_value() {
-		$tag = new Tag( 'p', 'Hello' );
-		$this->assertSame( 'Hello', $tag->value() );
-		$this->assertSame( 'bar', $tag->value( ['bar'] ) );
-		$this->assertSame( '<p>Hello</p>', $tag->value( $tag ) );
-	}
-
 	public function test_open() {
 		$tag = new Tag( 'p' );
 		$this->assertSame( '<p>', $tag->open() );
 	}
 
-	public function test_set_value() {
+	public function test_set_content() {
 		$tag = new Tag( 'p', 'Hello' );
-		$tag->set_value( ['foo' => 'bar'] );
-		$this->assertSame( ['foo' => 'bar'], $tag->get_value() );
+		$tag->set_content( ['foo' => 'bar'] );
+		$this->assertSame( ['foo' => 'bar'], $tag->get_content() );
 
 		try {
-			$tag->set_value( (object) [] );
+			$tag->set_content( (object) [] );
 			$this->assertFalse( true );
 		} catch ( \Exception $e ) {
 			$this->assertNotEmpty( $e->getMessage() );
