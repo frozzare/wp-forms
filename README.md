@@ -49,6 +49,12 @@ forms()->render( 'contact' );
 
 ```
 
+## Validation rules
+
+```
+alpha, alpha_num, array, between, bool, digit, email, float, int, ip, min, max, numeric, required, size, string, url
+```
+
 ## License
 
 MIT © [Fredrik Forsmo](https://github.com/frozzare)
