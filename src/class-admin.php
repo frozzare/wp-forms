@@ -72,6 +72,8 @@ class Admin {
 				margin-top: -2px;
 			}
 
+			#screen-options-link-wrap,
+			.misc-pub-visibility,
 			#poststuff #normal-sortables,
 			#form-data > .handlediv,
 			#form-data > h2 {
