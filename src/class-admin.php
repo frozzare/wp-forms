@@ -87,7 +87,11 @@ class Admin {
 	 * Admin init callback.
 	 */
 	public function admin_init() {
-		$this->post_id = $_GET['post'];
+		$this->post_id = isset( $_GET['post'] ) ? (int) $_GET['post'] : 0;
+
+		if ( empty( $this->post_id ) ) {
+			return;
+		}
 
 		if ( $form = get_post_meta( $this->post_id, forms()->id_key(), true ) ) {
 			$this->form = forms()->get( $form );
@@ -130,7 +134,7 @@ class Admin {
 			'label'               => __( 'Form', 'forms' ),
 			'description'         => __( 'Forms', 'forms' ),
 			'labels'              => $labels,
-			'supports'            => ['title',],
+			'supports'            => ['title', ],
 			'hierarchical'        => false,
 			'public'              => false,
 			'show_ui'             => true,
