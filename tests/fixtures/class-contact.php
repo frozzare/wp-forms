@@ -3,12 +3,12 @@
 class Contact extends \Frozzare\Forms\Form {
 
 	/**
-	 * Get name.
+	 * Get attributes.
 	 *
-	 * @return string
+	 * @return array
 	 */
-	public function get_name() {
-		return 'contact';
+	public function attributes() {
+		return [];
 	}
 
 	/**
@@ -16,7 +16,7 @@ class Contact extends \Frozzare\Forms\Form {
 	 *
 	 * @return array
 	 */
-	public function get_fields() {
+	public function fields() {
 		return [
 			'name' => [
 				'label' => 'Name',
@@ -26,11 +26,11 @@ class Contact extends \Frozzare\Forms\Form {
 	}
 
 	/**
-	 * Get attributes.
+	 * Get name.
 	 *
-	 * @return array
+	 * @return string
 	 */
-	public function get_attributes() {
-		return [];
+	public function name() {
+		return 'contact';
 	}
 }

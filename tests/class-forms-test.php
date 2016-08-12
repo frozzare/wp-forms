@@ -42,7 +42,7 @@ class Forms_Test extends \WP_UnitTestCase {
 	public function test_add_class() {
 		require_once __DIR__ . '/fixtures/class-contact.php';
 
-		$this->forms->add( Contact::class );
+		$this->forms->add( 'Contact' );
 
 		$this->assertInstanceOf( Form::class, $this->forms->get( 'contact' ) );
 		$this->assertSame( 'contact', $this->forms->get( 'contact' )->get_name() );

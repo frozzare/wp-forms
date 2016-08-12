@@ -42,8 +42,8 @@ class Forms extends Container {
 				$key = new $key;
 			}
 
-			$form = new Form( $key->get_name(), $key->get_fields() ?: [], $key->get_attributes() ?: [] );
-			$key  = $key->get_name();
+			$form = new Form( $key->name(), $key->fields() ?: [], $key->attributes() ?: [] );
+			$key  = $key->name();
 		} else {
 			$form = new Form( $key, $fields, $attributes );
 		}
@@ -62,7 +62,7 @@ class Forms extends Container {
 	 */
 	protected function add_key( $key ) {
 		try {
-			$forms = $this->make( __NAMESPACE__ . '\\list' );
+			$forms = $this->make( 'list_all' );
 			$forms = is_array( $forms ) ? $forms : [];
 		} catch ( InvalidArgumentException $e ) {
 			$forms = [];
@@ -70,7 +70,7 @@ class Forms extends Container {
 
 		$forms[] = $key;
 
-		$this->bind( __NAMESPACE__ . '\\list', $forms );
+		$this->bind( 'list_all', $forms );
 	}
 
 	/**
@@ -80,7 +80,7 @@ class Forms extends Container {
 	 */
 	public function all() {
 		try {
-			$forms = $this->make( __NAMESPACE__ . '\\list' );
+			$forms = $this->make( 'list_all' );
 			$forms = is_array( $forms ) ? $forms : [];
 			$forms = array_map( function ( $form ) {
 				return $this->get( $form );
