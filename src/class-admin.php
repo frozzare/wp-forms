@@ -72,9 +72,9 @@ class Admin {
 				margin-top: -2px;
 			}
 
-			#screen-options-link-wrap,
-			.misc-pub-visibility,
-			#poststuff #normal-sortables,
+			.post-type-forms_data #screen-options-link-wrap,
+			.post-type-forms_data .misc-pub-visibility,
+			.post-type-forms_data #poststuff #normal-sortables,
 			#form-data > .handlediv,
 			#form-data > h2 {
 				display: none;
