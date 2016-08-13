@@ -8,7 +8,7 @@ php:
   - 7.1
 
 env:
-  - WP_VERSION=4.1 WP_MULTISITE=0
+  - WP_VERSION=4.3 WP_MULTISITE=0
   - WP_VERSION=latest WP_MULTISITE=0
 
 install:
