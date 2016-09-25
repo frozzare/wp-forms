@@ -34,7 +34,7 @@ class Forms extends Container {
 	 * @param  array  $fields
 	 * @param  array  $attributes
 	 *
-	 * @return mixed
+	 * @return \Frozzare\Forms\Form
 	 */
 	public function add( $key, array $fields = [], array $attributes = [] ) {
 		if ( class_exists( $key ) || $key instanceof Form ) {

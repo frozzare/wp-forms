@@ -103,12 +103,6 @@ class Form {
 		// Set form tag attributes.
 		$this->tag->set_attribute( 'id', strtolower( $this->name ) );
 		$this->tag->set_attribute( 'name', strtolower( $this->name ) );
-
-		// Save fields if nonce is verified and fields validated correct.
-		if ( ! empty( $_POST ) && $this->verify_nonce() ) {
-			$this->validate_fields();
-			$this->save();
-		}
 	}
 
 	/**
@@ -215,14 +209,32 @@ class Form {
 	/**
 	 * Save form data.
 	 *
+	 * @param  callable $fn
+	 *
 	 * @return bool
 	 */
-	public function save() {
-		if ( ! empty( $this->errors ) ) {
-			return;
+	public function save( $fn = null ) {
+		// Bail if empty post or empty nonce.
+		if ( empty( $_POST ) || ! $this->verify_nonce() ) {
+			return false;
 		}
 
-		return $this->store->save( $this->id, $this->get_values() );
+		// Validate fields.
+		$this->validate_fields();
+
+		// Bail if errors.
+		if ( ! empty( $this->errors ) ) {
+			return false;
+		}
+
+		$values = $this->get_values();
+
+		// Let other save form data.
+		if ( is_callable( $fn ) && call_user_func_array( $fn, [$values] ) ) {
+			return true;
+		}
+
+		return $this->store->save( $this->id, $values );
 	}
 
 	/**

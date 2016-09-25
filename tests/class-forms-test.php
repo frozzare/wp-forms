@@ -67,7 +67,7 @@ class Forms_Test extends \WP_UnitTestCase {
 				'label' => 'Name',
 				'rules' => 'required'
 			]
-		] );
+		] )->save();
 
 		$this->assertEmpty( $this->forms->errors( 'contact' ) );
 
@@ -78,7 +78,7 @@ class Forms_Test extends \WP_UnitTestCase {
 				'label' => 'Name',
 				'rules' => 'required'
 			]
-		] );
+		] )->save();
 
 		$this->assertArrayHasKey( 'name.required', $this->forms->errors( 'contact' ) );
 	}
