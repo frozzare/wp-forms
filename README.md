@@ -45,7 +45,13 @@ forms()
         ]
     ] )
     ->button( 'Send' )
-    ->save();
+    ->save( function ( $data ) {
+        // Do something with the data...
+
+        // Return true if you will save or email the data yourself
+        // otherwise false to save in forms data post type.
+        return false;
+    } );
 
 // Render form.
 forms()
