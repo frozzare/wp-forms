@@ -143,4 +143,18 @@ class Forms extends Container {
 			$form->render();
 		}
 	}
+
+	/**
+	 * Save form data.
+	 *
+	 * @param  string   $key
+	 * @param  callable $fn
+	 *
+	 * @return bool
+	 */
+	public function save( $key, $fn = null ) {
+		if ( $form = $this->get( $key ) ) {
+			$form->save( $fn );
+		}
+	}
 }
