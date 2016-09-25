@@ -21,5 +21,6 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
  * @return \Frozzare\Forms\Admin;
  */
 add_action( 'plugins_loaded', function () {
-	return new \Frozzare\Forms\Admin;
+	new \Frozzare\Forms\Admin;
+	new \Frozzare\Forms\Ajax;
 } );

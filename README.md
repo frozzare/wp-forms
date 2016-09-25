@@ -53,6 +53,20 @@ forms()
 
 ```
 
+## Save form with ajax
+
+Example
+
+```
+$('.form-submit').on('click', function (e) {
+    e.preventDefault();
+
+    $.post('/forms-ajax/?action=save&form=contact', $('form').serialize(), function (res) {
+        // res.success will be true or false
+    });
+});
+```
+
 ## Validation rules
 
 ```
