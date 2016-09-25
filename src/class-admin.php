@@ -38,7 +38,9 @@ class Admin {
 	 * Add meta boxes.
 	 */
 	public function add_meta_boxes() {
-		add_meta_box( 'form-data', esc_html__( 'Fields data', 'forms' ), [$this, 'metabox'] );
+		if ( isset( $_GET['post_type'] ) && $_GET['post_type'] === 'forms_data' ) {
+			add_meta_box( 'form-data', esc_html__( 'Fields data', 'forms' ), [$this, 'metabox'] );
+		}
 	}
 
 	/**
@@ -134,7 +136,7 @@ class Admin {
 			'label'               => __( 'Form', 'forms' ),
 			'description'         => __( 'Forms', 'forms' ),
 			'labels'              => $labels,
-			'supports'            => ['title', ],
+			'supports'            => ['title'],
 			'hierarchical'        => false,
 			'public'              => false,
 			'show_ui'             => true,
