@@ -14,38 +14,42 @@ composer require frozzare/wp-forms
 
 ```php
 // Register form.
-forms()->add( 'contact', [
-	'name' => [
-		'label' => 'Name',
-		'rules' => 'required|max:250'
-	],
-	'email' => [
-		'label' => 'Email',
-		'type'  => 'email',
-		'rules' => 'required|email'
-	],
-	'text'  => [
-		'label' => 'Text',
-		'type'  => 'textarea'
-	],
-	'color' => [
-		'label' => 'Select color',
-		'type'  => 'select',
-		'items' => [
-			[
-				'text'  => 'Blue',
-				'value' => 'blue',
-			],
-			[
-				'text'  => 'Green',
-				'value' => 'green'
-			]
-		]
-	]
-] )->button( 'Send' );
+forms()
+    ->add( 'contact', [
+        'name' => [
+            'label' => 'Name',
+            'rules' => 'required|max:250'
+        ],
+        'email' => [
+            'label' => 'Email',
+            'type'  => 'email',
+            'rules' => 'required|email'
+        ],
+        'text'  => [
+            'label' => 'Text',
+            'type'  => 'textarea'
+        ],
+        'color' => [
+            'label' => 'Select color',
+            'type'  => 'select',
+            'items' => [
+                [
+                    'text'  => 'Blue',
+                    'value' => 'blue',
+                ],
+                [
+                    'text'  => 'Green',
+                    'value' => 'green'
+                ]
+            ]
+        ]
+    ] )
+    ->button( 'Send' )
+    ->save();
 
 // Render form.
-forms()->render( 'contact' );
+forms()
+    ->render( 'contact' );
 
 ```
 
