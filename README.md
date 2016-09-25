@@ -57,7 +57,7 @@ forms()
 
 Example
 
-```
+```js
 $('.form-submit').on('click', function (e) {
     e.preventDefault();
 
