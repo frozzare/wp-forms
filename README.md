@@ -62,7 +62,8 @@ $('.form-submit').on('click', function (e) {
     e.preventDefault();
 
     $.post('/forms-ajax/?action=save&form=contact', $('form').serialize(), function (res) {
-        // res.success will be true or false
+        // res.success is true or false
+        // res.errors contains all errors if any.
     });
 });
 ```
