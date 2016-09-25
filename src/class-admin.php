@@ -38,7 +38,9 @@ class Admin {
 	 * Add meta boxes.
 	 */
 	public function add_meta_boxes() {
-		if ( isset( $_GET['post_type'] ) && $_GET['post_type'] === 'forms_data' ) {
+		global $post;
+
+		if ( is_object( $post ) && $post->post_type === $this->post_type ) {
 			add_meta_box( 'form-data', esc_html__( 'Fields data', 'forms' ), [$this, 'metabox'] );
 		}
 	}
