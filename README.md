@@ -45,7 +45,7 @@ forms()
         ]
     ] )
     ->button( 'Send' )
-    ->save( function ( $data ) {
+    ->save( function ( array $data ) {
         // Do something with the data...
 
         // Return true if you will save or email the data yourself
