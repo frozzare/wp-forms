@@ -68,11 +68,12 @@ class Tag extends Attributes {
 	/**
 	 * Get attributes converted to html.
 	 *
-	 * @param  array $attributes
+	 * @param  array  $attributes
+	 * @param  string $prefix
 	 *
 	 * @return string
 	 */
-	public function attributes( array $attributes = [] ) {
+	public function attributes( array $attributes = [], $prefix = '' ) {
 		$html = '';
 
 		if ( empty( $attributes ) && ! empty( $this->attributes ) ) {
@@ -98,7 +99,7 @@ class Tag extends Attributes {
 				$value = "\"$value\"";
 			}
 
-			$html .= " $name=" . $value;
+			$html .= " $prefix$name=" . $value;
 		}
 
 		return $html;

@@ -20,7 +20,8 @@
       "src/"
     ],
     "files": [
-      "src/helpers.php"
+      "src/helpers.php",
+      "src/fields.php"
     ]
   },
   "require": {

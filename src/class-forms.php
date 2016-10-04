@@ -2,6 +2,7 @@
 
 namespace Frozzare\Forms;
 
+use Frozzare\Forms\Tag;
 use Frozzare\Tank\Container;
 use InvalidArgumentException;
 
@@ -138,6 +139,13 @@ class Forms extends Container {
 		} catch ( InvalidArgumentException $e ) {
 			return;
 		}
+	}
+
+	/**
+	 * Convert array of attributes to html.
+	 */
+	public function html_attributes() {
+		return call_user_func_array( [new Tag, 'attributes'], func_get_args() );
 	}
 
 	/**
