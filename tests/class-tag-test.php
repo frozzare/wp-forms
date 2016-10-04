@@ -68,6 +68,7 @@ class Tag_Test extends \WP_UnitTestCase {
 		$this->assertSame( 'foo="bar"', trim( $tag->attributes() ) );
 		$this->assertSame( 'bar="foo"', trim( $tag->attributes( ['bar' => 'foo'] ) ) );
 		$this->assertSame( 'bar=\'["foo"]\'', trim( $tag->attributes( ['bar' => ['foo']] ) ) );
+		$this->assertSame( 'data-bar=\'["foo"]\'', trim( $tag->attributes( ['bar' => ['foo']], 'data-' ) ) );
 	}
 
 	public function test_open() {
