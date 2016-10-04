@@ -60,7 +60,7 @@ forms()
     } );
 
 // Get all errors.
-$errors = forms() ->errors( 'contact ');
+$errors = forms()->errors( 'contact ');
 
 // Render form.
 forms()
