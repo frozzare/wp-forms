@@ -18,7 +18,9 @@ class Containerable {
 	 *
 	 * @param \Frozzare\Tank\Container $container
 	 */
-	public function set_container( Container $container ) {
-		$this->container = $container;
+	public function set_container( $container ) {
+		if ( $container instanceof Container ) {
+			$this->container = $container;
+		}
 	}
 }
