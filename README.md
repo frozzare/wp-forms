@@ -59,7 +59,7 @@ forms()
         return false;
     } );
 
-// Get all errors.
+// Get errors.
 $errors = forms()->errors( 'contact ');
 
 // Render form.
