@@ -23,4 +23,7 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 add_action( 'plugins_loaded', function () {
 	new \Frozzare\Forms\Admin;
 	new \Frozzare\Forms\Ajax;
+
+	// Load custom fields.
+	require_once __DIR__ . '/src/fields.php';
 } );
