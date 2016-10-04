@@ -86,12 +86,60 @@ class Field extends Attributes {
 	}
 
 	/**
+	 * Render custom field if bound and container exists.
+	 */
+	protected function custom_field() {
+		if ( is_null( $this->container ) ) {
+			return;
+		}
+
+		$type = $this->get_attribute( 'type' );
+		$key  = 'field_' . $type;
+
+		if ( ! $this->container->bound( $key ) ) {
+			return;
+		}
+
+		// Support both ob and a return value.
+		ob_start();
+		$value = $this->container->make( $key, [$this->attributes] );
+		$html  = ltrim( ob_get_clean() );
+
+		// If return value is a string and not empty it should be used instead.
+		if ( is_string( $value ) && ! empty( $value ) ) {
+			$html = $value;
+		}
+
+		// If a instanceof `Tag` is returned we can return that.
+		if ( $value instanceof Tag ) {
+			return $value;
+		}
+
+		// If a instanceof `Field` is returned we can return
+		// the tag from the field.
+		if ( $value instanceof Field ) {
+			return $value->field();
+		}
+
+		// Create a new tag based on the html.
+		$tag = new Tag;
+		$tag->set_html( $html );
+
+		return $tag;
+	}
+
+	/**
 	 * Get field tag.
 	 *
 	 * @return \Frozzare\Forms\Tag
 	 */
 	public function field() {
 		$escape = empty( $this->items ) ? $this->escape : false;
+
+		// Render custom fields if bound.
+		if ( $tag = $this->custom_field() ) {
+			return $tag;
+		}
 
 		return new Tag( $this->tag, $this->get_content(), $this->attributes, $escape, $this->xhtml );
 	}
@@ -107,7 +155,11 @@ class Field extends Attributes {
 		foreach ( $this->items as $item ) {
 			$item['type'] = '';
 			$item['name'] = $this->name . '[]';
-			$html .= ( new Field( $item, 'option', [], false ) )->field();
+
+			$field = new Field( $item, 'option', [], false );
+			$field->set_container( $this->container );
+
+			$html .= $field->field();
 		}
 
 		return $html;

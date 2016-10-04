@@ -21,6 +21,13 @@ class Tag extends Attributes {
 	protected $escape = true;
 
 	/**
+	 * Custom html for tag.
+	 *
+	 * @var string
+	 */
+	protected $html;
+
+	/**
 	 * Tag name.
 	 *
 	 * @var string
@@ -50,7 +57,7 @@ class Tag extends Attributes {
 	 * @param bool   $escape
 	 * @param bool   $xhtml
 	 */
-	public function __construct( $name, $content = null, array $attributes = [], $escape = true, $xhtml = false ) {
+	public function __construct( $name = '', $content = null, array $attributes = [], $escape = true, $xhtml = false ) {
 		$this->name       = $name;
 		$this->content    = $content;
 		$this->attributes = $attributes;
@@ -186,6 +193,15 @@ class Tag extends Attributes {
 	}
 
 	/**
+	 * Set custom html for tag.
+	 *
+	 * @param  string $html
+	 */
+	public function set_html( $html ) {
+		$this->html = $html;
+	}
+
+	/**
 	 * Set tag content.
 	 *
 	 * @param  mixed $content
@@ -210,6 +226,10 @@ class Tag extends Attributes {
 	 * @return string
 	 */
 	public function render() {
+		if ( ! empty( $this->html ) ) {
+			return $this->html;
+		}
+
 		if ( is_null( $this->content ) || $this->is_xhtml() ) {
 			return $this->open();
 		}

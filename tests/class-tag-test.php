@@ -39,6 +39,12 @@ class Tag_Test extends \WP_UnitTestCase {
 		$this->assertSame( '<p>Hello</p>', $tag->content( $tag ) );
 	}
 
+	public function test_custom_html() {
+		$tag = new Tag();
+		$tag->set_html( '<p>hello</p>' );
+		$this->assertSame( '<p>hello</p>', $tag->render() );
+	}
+
 	public function test_escape() {
 		$tag = new Tag( 'p', 'Hello' );
 		$this->assertSame( 'Hello', $tag->escape( $tag->get_content() ) );

@@ -48,6 +48,9 @@ class Forms extends Container {
 			$form = new Form( $key, $fields, $attributes );
 		}
 
+		$form->set_container( $this );
+		$form->set_fields( $fields );
+
 		$key = strtolower( $key );
 
 		$this->add_key( $key );
@@ -56,21 +59,34 @@ class Forms extends Container {
 	}
 
 	/**
-	 * Add form key to list.
+	 * Add field.
+	 *
+	 * @param  string   $key
+	 * @param  callable $fn
+	 *
+	 * @return \Frozzare\Forms\Field
+	 */
+	public function add_field( $key, $fn ) {
+		return $this->bind( 'field_' . $key, $fn );
+	}
+
+	/**
+	 * Add values key to container lists.
 	 *
 	 * @param  string $key
+	 * @param  string $list_key
 	 */
-	protected function add_key( $key ) {
+	protected function add_key( $key, $list_key = 'forms_list' ) {
 		try {
-			$forms = $this->make( 'forms_list' );
-			$forms = is_array( $forms ) ? $forms : [];
+			$list = $this->make( $list_key );
+			$list = is_array( $list ) ? $list : [];
 		} catch ( InvalidArgumentException $e ) {
-			$forms = [];
+			$list = [];
 		}
 
-		$forms[] = $key;
+		$list[$key] = $key;
 
-		$this->bind( 'forms_list', $forms );
+		$this->bind( $list_key, $list );
 	}
 
 	/**

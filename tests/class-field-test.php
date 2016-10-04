@@ -4,6 +4,7 @@ namespace Frozzare\Tests\Forms;
 
 use Frozzare\Forms\Field;
 use Frozzare\Forms\Tag;
+use Frozzare\Tank\Container;
 
 class Field_Test extends \WP_UnitTestCase {
 
@@ -11,6 +12,16 @@ class Field_Test extends \WP_UnitTestCase {
 		$field = new Field( ['name' => 'name'] );
 		$this->assertInstanceOf( Tag::class, $field->field() );
 		$this->assertSame( '<input class="form-control" type="string" id="name" name="name" />', $field->field()->__toString() );
+	}
+
+	public function test_custom_field() {
+		$container = new Container;
+		$container->bind( 'field_custom', function ( $attributes ) {
+			return '<p>Hello</p>';
+		} );
+		$field = new Field( ['name' => 'name', 'type' => 'custom'] );
+		$field->set_container( $container );
+		$this->assertSame( '<p>Hello</p>', $field->field()->__toString() );
 	}
 
 	public function test_label() {

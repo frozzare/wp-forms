@@ -2,7 +2,7 @@
 
 namespace Frozzare\Forms;
 
-class Form {
+class Form extends Containerable {
 
 	/**
 	 * Form attributes.
@@ -98,7 +98,7 @@ class Form {
 		$this->button = new Tag( 'button', esc_html__( 'Save', 'forms' ), ['class' => 'form-submit'] );
 
 		// Set form fields.
-		$this->set_fields( $fields );
+		// $this->set_fields( $fields );
 
 		// Set form tag attributes.
 		$this->tag->set_attribute( 'id', strtolower( $this->name ) );
@@ -273,7 +273,10 @@ class Form {
 				$this->rules[$field['name']] = $field['rules'];
 			}
 
-			$this->fields[] = new Field( $field );
+			$field = new Field( $field );
+			$field->set_container( $this->container );
+
+			$this->fields[] = $field;
 		}
 	}
 

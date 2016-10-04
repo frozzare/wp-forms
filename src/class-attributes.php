@@ -4,7 +4,7 @@ namespace Frozzare\Forms;
 
 use InvalidArgumentException;
 
-class Attributes {
+class Attributes extends Containerable {
 
 	/**
 	 * Attributes.
