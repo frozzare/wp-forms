@@ -22,20 +22,24 @@ forms()
 // Add form.
 forms()
     ->add( 'contact', [
-        'name' => [
+        'name'  => [
             'label' => 'Name',
             'rules' => 'required|max:250'
         ],
-        'email' => [
+        'email'  => [
             'label' => 'Email',
             'type'  => 'email',
             'rules' => 'required|email'
         ],
-        'text'  => [
+        'custom' => [
+            'label' => 'Custom',
+            'type'  => 'custom'
+        ],
+        'text'   => [
             'label' => 'Text',
             'type'  => 'textarea'
         ],
-        'color' => [
+        'color'  => [
             'label' => 'Select color',
             'type'  => 'select',
             'items' => [
