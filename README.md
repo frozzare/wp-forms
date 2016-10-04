@@ -13,7 +13,13 @@ composer require frozzare/wp-forms
 ## Example
 
 ```php
-// Register form.
+// Add custom field.
+forms()
+    ->add_field( 'custom', function ( $attributes ) {
+        return sprintf( '<p><input type="text" name="%s" /></p>', $attributes['name'] );
+    } );
+
+// Add form.
 forms()
     ->add( 'contact', [
         'name' => [
@@ -52,6 +58,9 @@ forms()
         // otherwise false to save in forms data post type.
         return false;
     } );
+
+// Get all errors.
+$errors = forms() ->errors( 'contact ');
 
 // Render form.
 forms()
