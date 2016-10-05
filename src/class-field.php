@@ -152,9 +152,18 @@ class Field extends Attributes {
 	public function get_content() {
 		$html = $this->text;
 
+		if ( ! empty( $this->items ) ) {
+			$this->attributes['name'] .= '[]';
+		}
+
 		foreach ( $this->items as $item ) {
 			$item['type'] = '';
-			$item['name'] = $this->name . '[]';
+
+			foreach ( ['name', 'id'] as $key ) {
+				if ( isset( $item[$key] ) ) {
+					unset( $item[$key] );
+				}
+			}
 
 			$field = new Field( $item, 'option', [], false );
 			$field->set_container( $this->container );
