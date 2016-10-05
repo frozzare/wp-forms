@@ -152,10 +152,6 @@ class Field extends Attributes {
 	public function get_content() {
 		$html = $this->text;
 
-		if ( ! empty( $this->items ) ) {
-			$this->attributes['name'] .= '[]';
-		}
-
 		foreach ( $this->items as $item ) {
 			$item['type'] = '';
 
