@@ -25,7 +25,7 @@ class Ajax_Test extends \WP_UnitTestCase {
 
 	public function test_actions() {
 		$this->assertSame( 10, has_action( 'init', [$this->ajax, 'add_endpoint'] ) );
-		$this->assertSame( 10, has_action( 'parse_query', [$this->ajax, 'handle_ajax'] ) );
+		$this->assertSame( 10, has_action( 'parse_request', [$this->ajax, 'handle_ajax'] ) );
 	}
 
 	public function test_endpoint() {
