@@ -30,21 +30,15 @@ class Ajax {
 	 * Handle ajax.
 	 */
 	public function handle_ajax() {
-		global $wp_query;
-
-		if ( ! is_object( $wp_query ) ) {
-			return;
-		}
-
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			return;
 		}
 
-		if ( ! empty( $_GET['action'] ) ) {
-			$wp_query->set( 'forms_ajax_action', sanitize_text_field( $_GET['action'] ) );
-		}
+		$ajax_action = '';
 
-		$ajax_action = $wp_query->get( 'forms_ajax_action' );
+		if ( ! empty( $_GET['action'] ) ) {
+			$ajax_action = sanitize_text_field( $_GET['action'] );
+		}
 
 		if ( has_action( $this->action_prefix . $ajax_action ) !== false ) {
 			if ( ! defined( 'DOING_AJAX' ) ) {
@@ -102,7 +96,7 @@ class Ajax {
 	 */
 	protected function setup_actions() {
 		add_action( 'init', [$this, 'add_endpoint'] );
-		add_action( 'parse_query', [$this, 'handle_ajax'] );
+		add_action( 'parse_request', [$this, 'handle_ajax'] );
 
 		// Ajax actions.
 		add_action( $this->action_prefix . 'save', [$this, 'save'] );
