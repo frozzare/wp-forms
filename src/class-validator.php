@@ -341,6 +341,15 @@ class Validator {
 		return $this->get_size( $name, $value ) <= $parameters[0];
 	}
 
+	/**
+	 * Validate that the recaptcha is valid.
+	 *
+	 * @param  string $name
+	 * @param  mixed  $value
+	 * @param  array  $parameters
+	 *
+	 * @return bool
+	 */
 	protected function validate_recaptcha( $name, $value, $parameters ) {
 		$valid = false;
 		if ( ! empty( $parameters[0] ) && ! empty( $_POST['g-recaptcha-response'] ) ) {
