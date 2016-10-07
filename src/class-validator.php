@@ -341,6 +341,35 @@ class Validator {
 		return $this->get_size( $name, $value ) <= $parameters[0];
 	}
 
+	protected function validate_recaptcha( $name, $value, $parameters ) {
+		$valid = false;
+		if ( ! empty( $parameters[0] ) && ! empty( $_POST['g-recaptcha-response'] ) ) {
+			$context = stream_context_create(
+				[ 'http' =>
+					  [
+						  'method'  => 'POST',
+						  'header'  => 'Content-type: application/x-www-form-urlencoded',
+						  'content' => http_build_query(
+							  [
+								  'secret' => $parameters[0],
+								  'response' =>  $_POST['g-recaptcha-response'],
+								  'remoteip' => $_SERVER['REMOTE_ADDR']
+							  ]
+						  )
+					  ]
+				]
+			);
+
+			$result = json_decode( file_get_contents( 'https://www.google.com/recaptcha/api/siteverify', false, $context ), true );
+
+			if ( ! empty ( $result['success'] ) ) {
+				$valid = true;
+			}
+		}
+
+		return $valid;
+	}
+
 	/**
 	 * Validate that a value is required.
 	 *
