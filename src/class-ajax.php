@@ -86,7 +86,7 @@ class Ajax {
 		}
 
 		wp_send_json( [
-			'success' => $form->save(),
+			'success' => $form->get_saved_status(),
 		    'errors'  => $form->get_errors()
 		] );
 	}

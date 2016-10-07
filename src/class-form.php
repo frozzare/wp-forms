@@ -65,6 +65,12 @@ class Form extends Containerable {
 	protected $rules = [];
 
 	/**
+	 * Store save status to return in ajax
+	 *
+	 * @var bool
+	 */
+	protected $successfully_saved = false;
+	/**
 	 * The form store instance.
 	 *
 	 * @var \Frozzare\Forms\Store
@@ -234,7 +240,20 @@ class Form extends Containerable {
 			return true;
 		}
 
-		return $this->store->save( $this->id, $values );
+		// Store status to use in ajax return
+		$this->successfully_saved = $this->store->save( $this->id, $values );
+
+		return $this->successfully_saved;
+	}
+
+	/**
+	 * Return save status
+	 * Used in ajax return
+	 *
+	 * @return bool
+	 */
+	public function get_saved_status() {
+		return $this->successfully_saved;
 	}
 
 	/**
