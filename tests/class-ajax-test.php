@@ -60,14 +60,15 @@ class Ajax_Test extends \WP_UnitTestCase {
 		    'form'   => 'contact'
 		];
 
+		$_POST['_forms_nonce'] = wp_create_nonce( 'forms_contact' );
+
 		forms()->add( 'contact', [
 			'name' => [
 				'label' => 'Name',
 				'rules' => 'required'
 			]
-		] );
+		] )->save( __return_true() );
 
-		$_POST['_forms_nonce'] = wp_create_nonce( 'forms_contact' );
 
 		$this->ajax->save();
 		$this->expectOutputRegex( '/\{\"success\":false,\"errors\":\{\"name.required\":\"\"\}\}/' );
