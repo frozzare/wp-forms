@@ -85,6 +85,13 @@ class Form extends Containerable {
 	protected $tag;
 
 	/**
+	 * Nonce input name
+	 *
+	 * @var string
+	 */
+	protected $nonce_name = '_forms_nonce';
+
+	/**
 	 * Form constructor.
 	 *
 	 * @param string $name
@@ -196,7 +203,7 @@ class Form extends Containerable {
 		echo $this->tag->open();
 
 		// Create nonce field.
-		wp_nonce_field( 'forms_' . $this->id, '_forms_nonce' );
+		wp_nonce_field( 'forms_' . $this->id, $this->nonce_name );
 
 		foreach ( $this->fields as $field ) {
 			echo $this->div->open();
@@ -323,10 +330,30 @@ class Form extends Containerable {
 	 * @return bool
 	 */
 	protected function verify_nonce() {
-		if ( ! isset( $_POST['_forms_nonce'] ) ) {
+		if ( ! isset( $_POST[ $this->nonce_name ] ) ) {
+			$key = sprintf( '%s.%s', $this->nonce_name, 'missing_nonce' );
+
+			$error = [
+				$key => apply_filters( 'forms_get_error_message', 'Missing nonce', $key, null ),
+			];
+
+			$this->errors = array_merge( $this->errors, $error );
+
 			return false;
 		}
 
-		return wp_verify_nonce( $_POST['_forms_nonce'], 'forms_' . $this->id );
+		$success = wp_verify_nonce( $_POST[ $this->nonce_name ], 'forms_' . $this->id );
+
+		if ( ! $success ) {
+			$key = sprintf( '%s.%s', $this->nonce_name, 'invalid_nonce' );
+
+			$error = [
+				$key => apply_filters( 'forms_get_error_message', 'Invalid nonce', $key, $_POST[ $this->nonce_name ] ),
+			];
+
+			$this->errors = array_merge( $this->errors, $error );
+		}
+
+		return $success;
 	}
 }
