@@ -6,6 +6,11 @@ use Frozzare\Forms\Form;
 
 class Form_Test extends \WP_UnitTestCase {
 
+	public function tearDown() {
+		parent::tearDown();
+		unset( $_POST );
+	}
+
 	public function test_button() {
 		$form = new Form( 'contact' );
 		$form->render();

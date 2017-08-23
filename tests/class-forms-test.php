@@ -15,6 +15,7 @@ class Forms_Test extends \WP_UnitTestCase {
 	public function tearDown() {
 		parent::tearDown();
 		unset( $this->forms );
+		unset( $_POST );
 	}
 
 	public function test_add() {
@@ -68,8 +69,6 @@ class Forms_Test extends \WP_UnitTestCase {
 				'rules' => 'required'
 			]
 		] )->save();
-
-		$this->assertEmpty( $this->forms->errors( 'contact' ) );
 
 		$_POST['_forms_nonce'] = wp_create_nonce( 'forms_contact' );
 
